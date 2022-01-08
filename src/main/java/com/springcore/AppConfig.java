@@ -1,5 +1,6 @@
 package com.springcore;
 
+import com.springcore.discount.DiscountPolicy;
 import com.springcore.discount.FixDiscountPolicy;
 import com.springcore.member.MemberService;
 import com.springcore.member.MemberServiceImpl;
@@ -12,12 +13,22 @@ public class AppConfig {
     // 그리고 생성한 객체 인스턴스의 참조를 생성자를 통해서 주입해준다.(생성자 주입 방식)
 
     // 생성자 주입 방식
+    // 리팩토링 중복부분 -> 메서드로 다른 구현체 만듦
+    // 효과 : AppConfig을 보면 역할과 구현클래스가 한눈에 들어온다.
     public MemberService memberService() {
-        return new MemberServiceImpl(new MemoryMemberRepository());
+        return new MemberServiceImpl(memberRepository());
+    }
+
+    private MemoryMemberRepository memberRepository() {
+        return new MemoryMemberRepository();
     }
 
     public OrderService orderService() {
-        return new OrderServiceImpl(new MemoryMemberRepository(), new FixDiscountPolicy());
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
+    }
+
+    public DiscountPolicy discountPolicy() {
+        return new FixDiscountPolicy();
     }
 }
 

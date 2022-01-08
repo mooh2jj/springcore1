@@ -7,7 +7,9 @@ import com.springcore.member.MemberServiceImpl;
 
 public class MemberApp {
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
+        AppConfig appConfig = new AppConfig();
+//        MemberService memberService = new MemberServiceImpl();
+        MemberService memberService = appConfig.memberService();    // MemberServiceImpl, MemoryMemberRepository 주임됨
 
         Member member = new Member(1L, "memberA", Grade.VIP);
         memberService.join(member);

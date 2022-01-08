@@ -9,13 +9,20 @@ import com.springcore.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService{
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
+
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
+
     //    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();    // OrderServiceImp가 구현클래스에 의존한다.
 //    private final DiscountPolicy discountPolicy = new RateDiscountPolicy();      // 정책이 바뀌어 코드까지 바뀐다. DIP 위반!
                                                                                     // FixDiscountPolicy -> RateDiscountPolicy
     // 기능을 확장해서 변경하면, 클라이언트 코드에 영향을 준다! OCP 위반!
 
-    private DiscountPolicy discountPolicy;      // 이렇게만 두면 nullpointerException 생기지!
+//    private DiscountPolicy discountPolicy;      // 이렇게만 두면 nullpointerException 생기지!
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {

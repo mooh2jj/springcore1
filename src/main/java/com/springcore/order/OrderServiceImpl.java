@@ -1,17 +1,18 @@
 package com.springcore.order;
 
 import com.springcore.discount.DiscountPolicy;
-import com.springcore.discount.FixDiscountPolicy;
-import com.springcore.discount.RateDiscountPolicy;
 import com.springcore.member.Member;
 import com.springcore.member.MemberRepository;
-import com.springcore.member.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderServiceImpl implements OrderService{
 
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
@@ -31,6 +32,11 @@ public class OrderServiceImpl implements OrderService{
         int discountPrice = discountPolicy.discount(member, itemPrice);
 
         return new Order(memberId, itemName, itemPrice, discountPrice);
+    }
+
+    //테스트 용도
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
     }
 
 }
